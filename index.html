@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>樂善堂梁銶琚書院 中國歷史科 2027 DSE 備考指南儀表板</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.75);
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #38bdf8;
+            --priority-color: #fbbf24; 
+            --border-color: rgba(255, 255, 255, 0.1);
+            --progress-empty: #334155;
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --non-focus-opacity: 0.55;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --accent-color: #0284c7;
+            --priority-color: #d97706;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --progress-empty: #cbd5e1;
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            --non-focus-opacity: 0.65;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1250px;
+            width: 100%;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 340px 1fr;
+            grid-template-areas: 
+                "header header"
+                "sidebar main";
+            align-items: start;
+        }
+
+        header { grid-area: header; }
+        aside.sidebar { grid-area: sidebar; display: flex; flex-direction: column; gap: 20px; }
+        main { grid-area: main; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- Header & Multi-Progress --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 25px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--glass-shadow);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-info h1 { 
+            margin: 0; 
+            font-size: 24px; 
+            color: var(--accent-color); 
+            line-height: 1.3;
+        }
+        .header-info .sub-title { font-size: 15px; opacity: 0.85; margin-top: 4px; }
+        .exam-details { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+        .countdown { font-size: 17px; font-weight: bold; margin-top: 8px; color: var(--priority-color); }
+
+        .header-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+
+        .progress-dashboard {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(0,0,0,0.15);
+            padding: 12px 18px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .circle-progress {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-color) 0%, var(--progress-empty) 0%);
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .circle-progress::before {
+            content: attr(data-percent);
+            position: absolute;
+            width: 58px; height: 58px;
+            background: var(--bg-color);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: bold;
+        }
+
+        .sub-progress-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 170px;
+        }
+        .progress-item { display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+        .progress-label { display: flex; justify-content: space-between; font-weight: 500; }
+        .progress-track {
+            height: 6px;
+            width: 100%;
+            background: var(--progress-empty);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-color);
+            padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500;
+        }
+        .theme-toggle:hover { background: var(--accent-color); color: #fff; }
+
+        /* --- Cards --- */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .card h3 { margin-top: 0; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+
+        /* --- Timer --- */
+        .timer-display { font-size: 44px; font-weight: bold; text-align: center; margin: 8px 0; font-family: monospace; letter-spacing: 2px; }
+        
+        .timer-presets {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .preset-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .preset-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: var(--accent-color); }
+
+        .timer-custom-input {
+            display: flex; align-items: center; gap: 8px; justify-content: center; font-size: 14px; margin-bottom: 12px;
+        }
+        input[type="number"] {
+            width: 60px; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color);
+            color: var(--text-color); border-radius: 6px; padding: 6px; font-size: 15px; text-align: center;
+        }
+
+        .timer-controls { display: flex; gap: 8px; }
+        .timer-controls button {
+            flex: 1; padding: 10px; border-radius: 10px; border: none; cursor: pointer;
+            font-weight: bold; font-size: 14px;
+        }
+        .btn-start { background: var(--accent-color); color: white; }
+        .btn-pause { background: #eab308; color: white; }
+        .btn-reset { background: #64748b; color: white; }
+
+        /* --- Links & Resources --- */
+        .resource-link {
+            display: block; padding: 10px 14px; margin: 8px 0;
+            background: rgba(255,255,255,0.04); border-radius: 10px;
+            text-decoration: none; color: var(--text-color); font-size: 14px;
+            border: 1px solid transparent;
+        }
+        .resource-link:hover { background: rgba(56, 189, 248, 0.15); border-color: var(--accent-color); color: var(--accent-color); }
+        .gem-link { border-left: 4px solid #10b981; }
+
+        /* --- Exam Checklist Styling --- */
+        .checklist-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .checklist-item:hover {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: var(--accent-color);
+        }
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.15);
+            cursor: pointer;
+        }
+
+        /* --- Controls & Filter Toolbar --- */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.15);
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-group, .action-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .tool-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .tool-btn.active {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+            font-weight: bold;
+        }
+        .tool-btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #f87171;
+        }
+        .tool-btn-danger:hover { background: #ef4444; color: white; }
+
+        /* --- Collapsible Topic Sections --- */
+        details.topic-section {
+            background: rgba(255,255,255,0.02); border-radius: 14px; padding: 6px; margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+        summary.collapsible-header {
+            cursor: pointer; color: var(--accent-color); font-size: 17px; font-weight: bold;
+            padding: 14px 16px; background: rgba(0,0,0,0.2); border-radius: 10px;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            user-select: none;
+        }
+        summary.collapsible-header::-webkit-details-marker { display: none; }
+        summary.collapsible-header::after { content: '▼'; font-size: 12px; transition: transform 0.3s; }
+        details[open] > summary.collapsible-header::after { transform: rotate(180deg); }
+
+        .collapsible-content { padding: 15px 10px 5px 10px; display: flex; flex-direction: column; gap: 12px; }
+
+        .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+        /* Topic Cards */
+        .topic-item {
+            display: flex; flex-direction: column; gap: 6px; padding: 12px 14px;
+            background: rgba(255,255,255,0.04); border-radius: 12px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+        
+        .topic-main { display: flex; align-items: center; gap: 10px; width: 100%; cursor: pointer; }
+        .topic-item input[type="checkbox"] { transform: scale(1.3); cursor: pointer; margin: 0; }
+        
+        .topic-title { font-size: 15px; font-weight: 500; flex: 1; }
+
+        /* Focus vs Non-Focus Styling */
+        .topic-item.focus-topic {
+            border-color: rgba(251, 191, 36, 0.5);
+            background: rgba(251, 191, 36, 0.08);
+        }
+        .topic-item.focus-topic .topic-title {
+            color: var(--priority-color);
+            font-weight: 700;
+        }
+
+        .topic-item.non-focus-topic {
+            opacity: var(--non-focus-opacity);
+            border-style: dashed;
+        }
+
+        /* History Toggle & Display */
+        .history-btn {
+            align-self: flex-end;
+            font-size: 11px;
+            padding: 2px 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .history-btn:hover { background: var(--accent-color); color: white; }
+
+        .exam-history {
+            display: none;
+            font-size: 12px;
+            color: var(--accent-color);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-top: 4px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            line-height: 1.4;
+        }
+        .exam-history.show { display: block; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .container { grid-template-columns: 1fr; grid-template-areas: "header" "sidebar" "main"; }
+            aside.sidebar { flex-direction: row; flex-wrap: wrap; }
+            aside.sidebar > .card { flex: 1 1 300px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            header { flex-direction: column; align-items: stretch; text-align: center; }
+            .header-actions { align-items: center; }
+            .progress-dashboard { flex-direction: column; width: 100%; text-align: center; }
+            .sub-progress-bars { width: 100%; }
+            .topic-grid { grid-template-columns: 1fr; }
+            .toolbar { flex-direction: column; align-items: stretch; gap: 12px; }
+            .filter-group, .action-group { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-info">
+            <h1>樂善堂梁銶琚書院 中國歷史科</h1>
+            <div class="sub-title">2027 DSE 考生中史組備考指南儀表板</div>
+            <div class="exam-details">
+                📅 <b>考試日期</b>：2027 年 4 月 24 日（星期六）<br>
+                ⏱️ 卷一（歷代發展）：08:30 – 10:45 (2小時15分)｜卷二（歷史專題）：11:30 – 12:50 (1小時20分)
+            </div>
+            <div class="countdown" id="exam-countdown">距離考試還有: -- 天</div>
+        </div>
+
+        <div class="header-actions">
+            <button class="theme-toggle" onclick="toggleTheme()">🌓 切換深 / 淺色模式</button>
+            <div class="progress-dashboard">
+                <div class="circle-progress" id="main-progress" data-percent="0%"></div>
+                <div class="sub-progress-bars">
+                    <div class="progress-item">
+                        <div class="progress-label"><span>甲部重點</span><span id="pA-text">0%</span></div>
+                        <div class="progress-track"><div class="progress-fill" id="pA-bar"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><span>乙部重點</span><span id="pB-text">0%</span></div>
+                        <div class="progress-track"><div class="progress-fill" id="pB-bar"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label"><span>選修單元三</span><span id="pE-text">0%</span></div>
+                        <div class="progress-track"><div class="progress-fill" id="pE-bar"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <!-- Timer -->
+        <div class="card" id="timer-card">
+            <h3>⏳ 應試專注計時器</h3>
+            <div class="timer-display" id="timer-display">25:00</div>
+            
+            <div class="timer-presets">
+                <button class="preset-btn" onclick="setPresetTimer(55)">55分 (DBQ 40分)</button>
+                <button class="preset-btn" onclick="setPresetTimer(40)">40分 (Essay 25分)</button>
+                <button class="preset-btn" onclick="setPresetTimer(25)">25分 (15分題目)</button>
+                <button class="preset-btn" onclick="setPresetTimer(15)">15分 (10分題目)</button>
+            </div>
+
+            <div class="timer-custom-input">
+                自訂: <input type="number" id="timer-input" value="25" min="1" max="180"> 分鐘
+            </div>
+
+            <div class="timer-controls">
+                <button class="btn-start" id="btn-start" onclick="startTimer()">開始</button>
+                <button class="btn-pause" id="btn-pause" onclick="pauseTimer()">暫停</button>
+                <button class="btn-reset" onclick="resetTimer()">重置</button>
+            </div>
+        </div>
+
+        <div id="sidebar-rest-wrapper" style="display:flex; flex-direction:column; gap:20px;">
+            <!-- Exam Essentials Checklist -->
+            <div class="card">
+                <h3>🎒 DSE 考場必備物品 Checklist</h3>
+                <div class="checklist-group" id="exam-checklist">
+                    <label class="checklist-item"><input type="checkbox"> <span>📄 准考證正本 & 身份證正本</span></label>
+                    <label class="checklist-item"><input type="checkbox"> <span>🖊️ 黑色/藍色原子筆 (多備2-3支)</span></label>
+                    <label class="checklist-item"><input type="checkbox"> <span>✏️ 2B 鉛筆 & 膠擦 (劃MC卡)</span></label>
+                    <label class="checklist-item"><input type="checkbox"> <span>🩹 修正帶 / 塗改液</span></label>
+                    <label class="checklist-item"><input type="checkbox"> <span>📐 直尺 & 螢光筆 (審題劃線)</span></label>
+                    <label class="checklist-item"><input type="checkbox"> <span>🧮 計算機 (印有 HKEAA 字樣)</span></label>
+                    <label class="checklist-item"><input type="checkbox"> <span>⌚ 指針/數位手錶 (非智能/無鬧鐘)</span></label>
+                    <label class="checklist-item"><input type="checkbox"> <span>🧥 保暖外套 (考場冷氣較強)</span></label>
+                    <label class="checklist-item"><input type="checkbox"> <span>💧 水樽 (撕標籤) & 紙巾/濕紙巾</span></label>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🤖 溫習用 Google Gems</h3>
+                <a href="https://gemini.google.com/gem/1MJWoG3zChRXAnuVvomVmS4pOQF3ZMe43?usp=sharing" target="_blank" class="resource-link gem-link">✨ DSE 拆題教練</a>
+                <a href="https://gemini.google.com/gem/1tqaG1nzP0IQWxqybvz2LCk_vcVYyQ59P?usp=sharing" target="_blank" class="resource-link gem-link">📖 智能導師 (甲部)</a>
+                <a href="https://gemini.google.com/gem/1ftmBkqiH5HVIbGMx68Tj8-5fBTcBznCT?usp=sharing" target="_blank" class="resource-link gem-link">📘 智能導師 (乙部)</a>
+            </div>
+
+            <div class="card">
+                <h3>📚 應試官方資源</h3>
+                <a href="https://www.hkeaa.edu.hk/DocLibrary/HKDSE/Subject_Information/chist/2027hkdse-c-chist.pdf" target="_blank" class="resource-link">🔗 2027 評核大綱 (考評局)</a>
+                <a href="https://www.hkeaa.edu.hk/tc/hkdse/assessment/subject_information/category_a_subjects/hkdse_subj.html?A2&2&8_25" target="_blank" class="resource-link">🔗 考生表現示例</a>
+                <a href="https://www.hkeaa.edu.hk/tc/hkdse/assessment/subject_information/category_a_subjects/hkdse_subj.html?A2&2&8_5" target="_blank" class="resource-link">🔗 教師研討會簡報</a>
+                <a href="https://www.youtube.com/@hippooqqih" target="_blank" class="resource-link">📺 鄧老師 YouTube 頻道</a>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="filter-group">
+                <button class="tool-btn active" onclick="setFilter('all', this)">全部課題</button>
+                <button class="tool-btn" onclick="setFilter('focus', this)">🔥 2027 必考重點 (★)</button>
+                <button class="tool-btn" onclick="setFilter('uncompleted', this)">⏳ 未完成</button>
+            </div>
+            <div class="action-group">
+                <button class="tool-btn" onclick="toggleAllSections(true)">展開全部</button>
+                <button class="tool-btn" onclick="toggleAllSections(false)">折疊全部</button>
+                <button class="tool-btn" onclick="toggleAllHistory()">📜 顯示/隱藏考情</button>
+                <button class="tool-btn tool-btn-danger" onclick="resetAllProgress()">🔄 重置進度</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 15px;">📑 溫習進度追蹤器 <span style="font-size:13px; font-weight:normal; opacity:0.75;">(亮色為 2027 核心考點，灰色課題不計入總進度)</span></h3>
+            
+            <!-- 甲部 -->
+            <details class="topic-section" id="section-partA" open>
+                <summary class="collapsible-header">甲部：上古至十九世紀中葉</summary>
+                <div class="collapsible-content">
+                    <div class="topic-grid">
+                        
+                        <div class="topic-item non-focus-topic" data-section="partA" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">周代的封建與宗法制度</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2014(Q2), 2016(Q2), 2019(Q1 DBQ), 2021(Q3), 2023(Q3), 2025(Q2)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partA" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">春秋戰國的政治與社會變動</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q2), 2014(Q2), 2016(Q2), 2019(Q1 DBQ), 2021(Q3), 2023(Q3)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partA" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">秦始皇的集權統治與政策 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2013(Q1 DBQ), 2015(Q2), 2018(Q2), 2021(Q1 DBQ), 2024(Q1 DBQ)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partA" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">漢武帝的開邊與集權（獨尊儒術） ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q3), 2016(Q1 DBQ), 2018(Q2), 2021(Q1 DBQ), 2022(Q3), 2024(Q1 DBQ), 2025(Q3)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partA" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">王莽篡漢與東漢戚宦爭權</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2015(Q1 DBQ), 2023(Q4)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partA" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">北魏孝文帝的漢化政策 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q2), 2013(Q3), 2015(Q3), 2017(Q3), 2021(Q4), 2024(Q2)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partA" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">魏晉南北朝的士族政治與門閥 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2014(Q3), 2017(Q3), 2018(Q2), 2020(Q4), 2024(Q2)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partA" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">隋唐盛世（隋文帝/唐太宗/唐玄宗） ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q1 DBQ), 2014(Q1 DBQ), 2016(Q3), 2018(Q3), 2021(Q4), 2024(Q1 DBQ), 2025(Q3)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partA" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">安史之亂與唐代衰亡</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2013(Q3), 2015(Q4), 2017(Q1 DBQ), 2019(Q3), 2020(Q1 DBQ), 2024(Q3)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partA" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">宋代中央集權的確立</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q4), 2016(Q4), 2018(Q4), 2022(Q1 DBQ), 2025(Q4)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partA" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">明代君主集權的加強與文官制度</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q4), 2014(Q4), 2016(Q4), 2019(Q3), 2021(Q5), 2022(Q5), 2023(Q5), 2025(Q1 DBQ)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partA" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">清代君主集權的加強與清初民族政策 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2013(Q4), 2015(Q3/Q4), 2017(Q4), 2018(Q4), 2021(Q5), 2023(Q5), 2024(Q4)</div>
+                        </div>
+
+                    </div>
+                </div>
+            </details>
+
+            <!-- 乙部 -->
+            <details class="topic-section" id="section-partB" open>
+                <summary class="collapsible-header">乙部：十九世紀中葉至二十世紀末</summary>
+                <div class="collapsible-content">
+                    <div class="topic-grid">
+                        
+                        <div class="topic-item focus-topic" data-section="partB" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">鴉片戰爭與《南京條約》 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q5), 2013(Q5), 2016(Q5), 2025(Q5)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partB" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">英法聯軍與《北京條約》 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q5), 2013(Q5), 2018(Q5), 2021(Q5), 2024(Q5)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partB" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">甲午戰爭與列強劃分勢力範圍</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q5), 2014(Q5), 2018(Q5), 2019(Q5), 2023(Q5)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partB" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">義和團運動與《辛丑條約》 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2014(Q5), 2020(Q5), 2022(Q2 DBQ), 2025(Q5)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partB" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">洋務運動與維新運動</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2015(Q5), 2017(Q5), 2021(Q5), 2023(Q5), 2024(Q1 DBQ), 2025(Q5)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partB" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">清末革命運動與清朝覆亡 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2014(Q1 DBQ), 2020(Q5), 2024(Q1 DBQ)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partB" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">袁世凱稱帝與軍閥割據</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2015(Q6), 2022(Q7), 2025(Q6)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partB" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">五四運動 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q6), 2018(Q1 DBQ), 2025(Q5)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partB" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">國共第二次合作 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2014(Q1 DBQ), 2017(Q5), 2020(Q1 DBQ), 2022(Q1 DBQ), 2025(Q1 DBQ)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partB" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">抗日戰爭 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2014(Q5), 2016(Q5), 2020(Q1 DBQ), 2023(Q7), 2024(Q1 DBQ)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partB" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">國共和談與內戰</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2014(Q5), 2015(Q5), 2022(Q7), 2025(Q5)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partB" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">建國初期的社會主義建設 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q1 DBQ), 2013(Q1 DBQ), 2016(Q1 DBQ), 2018(Q7), 2022(Q7), 2025(Q7)</div>
+                        </div>
+
+                        <div class="topic-item non-focus-topic" data-section="partB" data-focus="false">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">文化大革命與對外關係</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012(Q7), 2014(Q7), 2017(Q6), 2019(Q7), 2021(Q7), 2024(Q7)</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="partB" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">改革開放與現代化建設 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2015(Q7), 2019(Q1 DBQ), 2021(Q8), 2023(Q8)</div>
+                        </div>
+
+                    </div>
+                </div>
+            </details>
+
+            <!-- 選修單元三 -->
+            <details class="topic-section" id="section-elective" open>
+                <summary class="collapsible-header">選修單元三：時代與知識分子</summary>
+                <div class="collapsible-content">
+                    <div class="topic-grid">
+                        
+                        <div class="topic-item focus-topic" data-section="elective" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">孔子 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2012, 2015, 2018, 2021, 2024</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="elective" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">司馬遷 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2013, 2016, 2019, 2022, 2025</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="elective" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">王安石 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2014, 2017, 2020, 2023</div>
+                        </div>
+
+                        <div class="topic-item focus-topic" data-section="elective" data-focus="true">
+                            <label class="topic-main"><input type="checkbox"> <span class="topic-title">梁啟超 ★</span></label>
+                            <button class="history-btn" onclick="toggleHistory(this)">📜 考情</button>
+                            <div class="exam-history">2015, 2018, 2021, 2024</div>
+                        </div>
+
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    // 1. 2027 DSE 倒數計時邏輯
+    function updateCountdown() {
+        const examDate = new Date('April 24, 2027 08:30:00').getTime();
+        const now = new Date().getTime();
+        const diff = examDate - now;
+        
+        const countdownEl = document.getElementById('exam-countdown');
+        if (diff > 0) {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            countdownEl.innerText = `距離 2027 DSE 考試還有: ${days} 天 ${hours} 小時`;
+        } else if (diff > -86400000) {
+            countdownEl.innerText = `今天是 2027 DSE 中史科考試大日子！加油！`;
+        } else {
+            countdownEl.innerText = `2027 DSE 考試已結束，祝願大家取得佳績！`;
+        }
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000 * 60 * 30);
+
+    // 2. 多維度進度計算 (僅計算焦點課題 data-focus="true")
+    const topicItems = document.querySelectorAll('.topic-item');
+    const checkboxes = document.querySelectorAll('.topic-item input[type="checkbox"]');
+
+    function updateProgress() {
+        let stats = {
+            partA: { total: 0, checked: 0 },
+            partB: { total: 0, checked: 0 },
+            elective: { total: 0, checked: 0 },
+            overall: { total: 0, checked: 0 }
+        };
+
+        topicItems.forEach((item) => {
+            const isFocus = item.getAttribute('data-focus') === 'true';
+            const section = item.getAttribute('data-section');
+            const cb = item.querySelector('input[type="checkbox"]');
+
+            if (isFocus) {
+                stats[section].total++;
+                stats.overall.total++;
+                if (cb.checked) {
+                    stats[section].checked++;
+                    stats.overall.checked++;
+                }
+            }
+        });
+
+        // 計算百分比
+        const calcPercent = (c, t) => t > 0 ? Math.round((c / t) * 100) : 0;
+        
+        const pA = calcPercent(stats.partA.checked, stats.partA.total);
+        const pB = calcPercent(stats.partB.checked, stats.partB.total);
+        const pE = calcPercent(stats.elective.checked, stats.elective.total);
+        const pOverall = calcPercent(stats.overall.checked, stats.overall.total);
+
+        // 更新 UI
+        document.getElementById('pA-text').innerText = pA + '%';
+        document.getElementById('pA-bar').style.width = pA + '%';
+        
+        document.getElementById('pB-text').innerText = pB + '%';
+        document.getElementById('pB-bar').style.width = pB + '%';
+        
+        document.getElementById('pE-text').innerText = pE + '%';
+        document.getElementById('pE-bar').style.width = pE + '%';
+
+        const mainProgress = document.getElementById('main-progress');
+        mainProgress.setAttribute('data-percent', pOverall + '%');
+        mainProgress.style.background = `conic-gradient(var(--accent-color) ${pOverall}%, var(--progress-empty) 0%)`;
+
+        saveProgress();
+    }
+
+    function saveProgress() {
+        const savedState = Array.from(checkboxes).map(cb => cb.checked);
+        localStorage.setItem('chist2027Progress', JSON.stringify(savedState));
+    }
+
+    function loadProgress() {
+        const saved = JSON.parse(localStorage.getItem('chist2027Progress')) || [];
+        checkboxes.forEach((cb, index) => {
+            if (saved[index] !== undefined) cb.checked = saved[index];
+        });
+        updateProgress();
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+
+    // 3. 考場 Checklist 自動儲存機制
+    const checklistCbs = document.querySelectorAll('#exam-checklist input[type="checkbox"]');
+    function saveChecklist() {
+        const state = Array.from(checklistCbs).map(cb => cb.checked);
+        localStorage.setItem('chist2027Checklist', JSON.stringify(state));
+    }
+    function loadChecklist() {
+        const saved = JSON.parse(localStorage.getItem('chist2027Checklist')) || [];
+        checklistCbs.forEach((cb, idx) => {
+            if (saved[idx] !== undefined) cb.checked = saved[idx];
+            cb.addEventListener('change', saveChecklist);
+        });
+    }
+    loadChecklist();
+
+    // 4. 專注時鐘邏輯 (支援開始、暫停/繼續、重置、預設按鈕)
+    let timerInterval = null;
+    let remainingSeconds = 25 * 60;
+    let isTimerRunning = false;
+    let isTimerPaused = false;
+
+    const timerDisplay = document.getElementById('timer-display');
+    const timerInput = document.getElementById('timer-input');
+    const btnStart = document.getElementById('btn-start');
+
+    function formatTime(secs) {
+        const m = Math.floor(secs / 60).toString().padStart(2, '0');
+        const s = (secs % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+    }
+
+    function setPresetTimer(minutes) {
+        timerInput.value = minutes;
+        resetTimer();
+    }
+
+    function startTimer() {
+        if (isTimerRunning && !isTimerPaused) return;
+
+        if (isTimerPaused) {
+            isTimerPaused = false;
+        } else {
+            remainingSeconds = parseInt(timerInput.value, 10) * 60;
+        }
+
+        isTimerRunning = true;
+        btnStart.innerText = "運行中...";
+        btnStart.style.opacity = "0.6";
+
+        timerInterval = setInterval(() => {
+            remainingSeconds--;
+            timerDisplay.innerText = formatTime(remainingSeconds);
+
+            if (remainingSeconds <= 0) {
+                clearInterval(timerInterval);
+                playAlertSound();
+                alert("專注時間完成！請停筆休息一下。");
+                resetTimer();
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        if (!isTimerRunning || isTimerPaused) return;
+        clearInterval(timerInterval);
+        isTimerPaused = true;
+        btnStart.innerText = "繼續";
+        btnStart.style.opacity = "1";
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        isTimerPaused = false;
+        remainingSeconds = parseInt(timerInput.value, 10) * 60;
+        timerDisplay.innerText = formatTime(remainingSeconds);
+        btnStart.innerText = "開始";
+        btnStart.style.opacity = "1";
+    }
+
+    function playAlertSound() {
+        try {
+            const context = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = context.createOscillator();
+            const gain = context.createGain();
+            osc.connect(gain);
+            gain.connect(context.destination);
+            osc.type = "sine";
+            osc.frequency.value = 880;
+            osc.start();
+            setTimeout(() => osc.stop(), 600);
+        } catch (e) { console.log(e); }
+    }
+
+    // 5. 考情歷史單一與全局展開/隱藏
+    function toggleHistory(btn) {
+        const historyDiv = btn.nextElementSibling;
+        historyDiv.classList.toggle('show');
+    }
+
+    let allHistoryShown = false;
+    function toggleAllHistory() {
+        allHistoryShown = !allHistoryShown;
+        document.querySelectorAll('.exam-history').forEach(el => {
+            if (allHistoryShown) el.classList.add('show');
+            else el.classList.remove('show');
+        });
+    }
+
+    // 6. 篩選邏輯 (全部 / 僅重點 / 未完成)
+    function setFilter(filterType, btn) {
+        document.querySelectorAll('.filter-group .tool-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        topicItems.forEach(item => {
+            const isFocus = item.getAttribute('data-focus') === 'true';
+            const isChecked = item.querySelector('input[type="checkbox"]').checked;
+
+            if (filterType === 'all') {
+                item.style.display = 'flex';
+            } else if (filterType === 'focus') {
+                item.style.display = isFocus ? 'flex' : 'none';
+            } else if (filterType === 'uncompleted') {
+                item.style.display = !isChecked ? 'flex' : 'none';
+            }
+        });
+    }
+
+    // 7. 展開/折疊全部 Sections
+    function toggleAllSections(openState) {
+        document.querySelectorAll('.topic-section').forEach(sec => sec.open = openState);
+    }
+
+    // 8. 重置所有進度
+    function resetAllProgress() {
+        if (confirm("確定要重置所有課題溫習進度嗎？此操作無法撤銷。")) {
+            checkboxes.forEach(cb => cb.checked = false);
+            updateProgress();
+        }
+    }
+
+    // 9. 深色/淺色主題 Toggle
+    function toggleTheme() {
+        const body = document.body;
+        if (body.getAttribute('data-theme') === 'light') {
+            body.removeAttribute('data-theme');
+            localStorage.setItem('chist2027Theme', 'dark');
+        } else {
+            body.setAttribute('data-theme', 'light');
+            localStorage.setItem('chist2027Theme', 'light');
+        }
+    }
+    if (localStorage.getItem('chist2027Theme') === 'light') {
+        document.body.setAttribute('data-theme', 'light');
+    }
+
+    // 初始加載
+    loadProgress();
+</script>
+
+</body>
+</html>
